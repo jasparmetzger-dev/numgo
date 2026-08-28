@@ -28,7 +28,7 @@ func calcStrides(shape []int) []int {
 	return S_k
 }
 
-func sortAndCopy[T Scalar](array *NDArray[T], axis int) (*NDArray[T], error){
+func sortAndCopy[T Scalar](array *NDArray[T], axis int) (*NDArray[T], error) {
 	return nil, nil
 }
 func sortInPlace[T Scalar](array *NDArray[T], axis int) error {

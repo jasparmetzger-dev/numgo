@@ -58,7 +58,7 @@ func (a *NDArray[T]) HasNan() bool {
 	return true
 }
 
-func (a *NDArray[T]) SearchSorted(value T, useLeftSide bool, axis int) ([]int, error){
+func (a *NDArray[T]) SearchSorted(value T, useLeftSide bool, axis int) ([]int, error) {
 	/*
 		Requires the array to be sorted!
 		Returns the indeces for each , where the each of values would fit in the array.

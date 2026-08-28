@@ -2,7 +2,6 @@ package math
 
 import (
 	"github.com/jasparmetzger-dev/numgo/ndarray"
-
 )
 
 func Mult[T ndarray.Scalar](array *ndarray.OneDArray[T]) ndarray.ScalarLike[T] {
