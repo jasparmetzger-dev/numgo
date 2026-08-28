@@ -1,26 +1,34 @@
 GO := go
-FLAGS :=
-BUILD_DIR := bin/
-PACKAGES := ./... # matches all packages recursively
+PACKAGES := ./...
 
-all: lint build test cover clean
+.PHONY: all build check clean coverage fmt fmt-check lint release test vet version
+
+all: check
 
 build:
-	@mkdir -p $(BUILD_DIR)
-	$(GO) build $(GOFLAGS) -v $(PACKAGES)
+	$(GO) build $(PACKAGES)
 
 test:
-	$(GO) test -race -cover -coverprofile=coverage.out -count=1 $(PACKAGES)
+	$(GO) test -race -count=1 $(PACKAGES)
+
+coverage:
+	$(GO) test -race -coverprofile=coverage.out -covermode=atomic -count=1 $(PACKAGES)
+	$(GO) tool cover -func=coverage.out
+
+fmt:
+	$(GO) fmt $(PACKAGES)
+
+fmt-check:
+	@test -z "$$($(GO)fmt -l $$(find . -name '*.go' -not -path './.git/*'))" || { echo "Go files need formatting; run 'make fmt'."; exit 1; }
+
+vet:
 	$(GO) vet $(PACKAGES)
 
 lint:
-	$(GO) fmt $(PACKAGES)
-	echo "fmt done."
-	$(GO) vet $(PACKAGES)
-	echo "vet done."
+	$(MAKE) fmt-check
+	$(MAKE) vet
 
-cover: test
-	$(GO) tool cover -func=coverage.out
+check: fmt-check vet test
 
 clean:
-	rm -rf $(BUILD_DIR) coverage.out
+	rm -f coverage.out
