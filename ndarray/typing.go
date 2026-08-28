@@ -1,7 +1,17 @@
 package ndarray
 
+// Types for Values in the array
 
-type Number interface {
+type DEFAULTT float64
+
+type Scalar interface {
+	_ScalarLike | NaN | None
+}
+
+type NaN struct{}
+type None struct{}
+
+type _ScalarLike interface {
 	_IntLike | _FloatLike
 }
 
@@ -14,5 +24,7 @@ type _FloatLike interface {
 }
 
 type _UIntLike interface {
-	~uint | ~uint8 | ~uint16 | ~uint32 | ~uint64 | ~uintptr
+	~uint | ~uint8 | ~uint16 | ~uint32 | ~uint64
 }
+
+// --- retyping the array ---
