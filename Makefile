@@ -3,7 +3,7 @@ FLAGS :=
 BUILD_DIR := bin/
 PACKAGES := ./... # matches all packages recursively
 
-.PHONY: clean test
+all: lint build test cover clean
 
 build:
 	@mkdir -p $(BUILD_DIR)

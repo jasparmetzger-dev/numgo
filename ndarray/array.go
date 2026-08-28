@@ -4,10 +4,21 @@ import (
 	"reflect"
 )
 
-// --- Struct and basic methods ---
+// --- STRUCT AND BASIC METHODS ---
 
 type NDArray[T Scalar] struct {
-	data    []T
+	Data    []ScalarLike[T]
+	shape   []int
+	strides []int
+}
+
+type OneDArray[T Scalar] struct {
+	Data []ScalarLike[T]
+	size int
+}
+
+type BoolNDArray struct {
+	Data    []bool
 	shape   []int
 	strides []int
 }
@@ -21,55 +32,21 @@ func (a *NDArray[T]) DType() reflect.Type {
 	return reflect.TypeOf(zero)
 }
 
-func (a *NDArray[T]) At(index []int, val ...T) (T, error) {
-	var dummy T
+func (a *NDArray[T]) At(index []int, val ...ScalarLike[T]) (ScalarLike[T], error) {
+	var dummy ScalarLike[T]
 	i, err := a.index(index)
 	if err != nil {
 		return dummy, err
 	}
 
-	arrVal := a.data[i]
+	arrVal := a.Data[i]
 	if len(val) == 1 {
-		a.data[i] = val[0]
+		a.Data[i] = val[0]
 	}
 	return arrVal, nil
 }
 
-// --- simple initiating ---
-
-func Full[T Scalar](shape []int, value T) (*NDArray[T], error) {
-	if len(shape) == 0 {
-		return &NDArray[T]{}, ShapeError("shape cannot be empty")
-	}
-
-	size := size(shape)
-	if size <= 0 {
-		return nil, ShapeError("invalid dimension sizes")
-	}
-
-	data := make([]T, size)
-	for i := range data {
-		data[i] = value
-	}
-
-	arr := NDArray[T]{
-		data:    data,
-		shape:   shape,
-		strides: calcStrides(shape),
-	}
-	return &arr, nil
-}
-
-func Zeroes[T _ScalarLike](shape []int) (*NDArray[T], error) {
-	var zero T
-	return Full(shape, zero)
-}
-func Ones[T _ScalarLike](shape []int) (*NDArray[T], error) {
-	var one T = T(1)
-	return Full(shape, one)
-}
-
-// --- helpers ---
+// --- HELPERS ---
 
 func size(shape []int) int {
 	size := 1

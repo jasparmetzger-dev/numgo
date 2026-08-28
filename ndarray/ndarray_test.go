@@ -98,8 +98,8 @@ func TestNDArray(t *testing.T) {
 				if tc.size != arr.Size() {
 					t.Errorf("Shape(): has %v, should %v", arr.Size(), tc.size)
 				}
-				if tc.size != len(arr.data) {
-					t.Errorf("Size(): has %v, should %v", len(arr.data), tc.size)
+				if tc.size != len(arr.Data) {
+					t.Errorf("Size(): has %v, should %v", len(arr.Data), tc.size)
 				}
 			})
 		}

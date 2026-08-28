@@ -2,18 +2,20 @@ package ndarray
 
 func calcStrides(shape []int) []int {
 	/*
-	C-Contigous Stride Calculation.
-	Implemented through a reverse for loop. O(N)
+		C-Contigous Stride Calculation.
+		Implemented through a reverse for loop. O(N)
 
-	For shape d_0, ... d_{N-1}:
+		For shape d_0, ... d_{N-1}:
 
-	S_k = \prod_{j=(k+1)}^{N-1} (d_j)
-	with S_{N-1} = 1
+		S_k = \prod_{j=(k+1)}^{N-1} (d_j)
+		with S_{N-1} = 1
 
 	*/
 
 	N := len(shape)
-	if N == 0 { return nil }
+	if N == 0 {
+		return nil
+	}
 
 	S_k := make([]int, N)
 	stride := 1
@@ -25,5 +27,3 @@ func calcStrides(shape []int) []int {
 
 	return S_k
 }
-
-
