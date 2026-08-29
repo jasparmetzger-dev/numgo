@@ -1,12 +1,18 @@
 package ndarray
 
-func (a *NDArray[T]) T() {
+func (a *NDArray[T]) T() *NDArray[T] {
+	oldShape := a.Shape()
 	newShape := []int{}
-	for i := len(a.Shape()) - 1; i >= 0; i++ {
+	for i := len(oldShape) - 1; i >= 0; i++ {
 		newShape = append(newShape, a.shape[i])
 	}
 	a.Reshape(newShape)
+
+	defer a.setoldShape(oldShape)
+	return a
+
 }
+func (a *NDArray[T]) setoldShape(oldShape []int) { a.shape = oldShape }
 
 func (a *NDArray[T]) Reshape(newShape []int) error {
 	if size(newShape) != a.Size() {

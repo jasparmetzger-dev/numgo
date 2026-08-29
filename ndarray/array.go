@@ -27,22 +27,18 @@ func (a *NDArray[T]) Shape() []int { return a.shape }
 
 func (a *NDArray[T]) Size() int { return size(a.shape) }
 
-func (a *NDArray[T]) DType() reflect.Type {
-	var zero T
-	return reflect.TypeOf(zero)
-}
+func (a *NDArray[T]) DType() reflect.Type { return reflect.TypeOf(Zero[T]()) }
 
 func (a *NDArray[T]) At(index []int, val ...ScalarLike[T]) (ScalarLike[T], error) {
-	var dummy ScalarLike[T]
 	i, err := a.index(index)
 	if err != nil {
-		return dummy, err
+		return ScalarLike[T]{}, err
 	}
 
 	arrVal := a.Data[i]
 	if len(val) == 1 {
 		a.Data[i] = val[0]
-	}
+	} 
 	return arrVal, nil
 }
 
